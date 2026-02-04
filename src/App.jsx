@@ -4656,9 +4656,145 @@ function SettingsModule({ users, setUsers, currentUser, setCurrentUser, isMobile
                 </div>
               </details>
 
-              <p style={{ margin: '12px 0 0', fontSize: '12px', color: '#64748b', textAlign: 'center' }}>
-                Diğer ülkeler için de benzer şekilde vize türleri ekleyebilirsiniz
-              </p>
+              <details style={{ background: 'rgba(245,158,11,0.05)', borderRadius: '10px', border: '1px solid rgba(245,158,11,0.2)', padding: '12px' }}>
+                <summary style={{ cursor: 'pointer', fontWeight: '600', color: '#f59e0b', fontSize: '14px', listStyle: 'none' }}>
+                  <span style={{ marginRight: '8px' }}>🇦🇪</span>
+                  BAE (Dubai) ({(appSettings?.visaDurations?.uae || []).length} tür)
+                </summary>
+                <div style={{ paddingLeft: '26px', marginTop: '10px' }}>
+                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', marginBottom: '10px' }}>
+                    {(appSettings?.visaDurations?.uae || []).map((d, idx) => {
+                      const name = typeof d === 'string' ? d : d.name;
+                      const price = typeof d === 'object' ? d.price : 0;
+                      const currency = typeof d === 'object' ? d.currency : '$';
+                      return (
+                        <div key={idx} style={{ display: 'flex', alignItems: 'center', gap: '6px', background: 'rgba(245,158,11,0.15)', padding: '6px 10px', borderRadius: '6px', border: '1px solid rgba(245,158,11,0.3)' }}>
+                          <span style={{ fontSize: '11px', color: '#f59e0b' }}>
+                            {name} {price > 0 && `• ${price} ${currency}`}
+                          </span>
+                          <button onClick={() => setAppSettings({ ...appSettings, visaDurations: { ...appSettings.visaDurations, uae: appSettings.visaDurations.uae.filter((_, i) => i !== idx) } })} style={{ background: 'none', border: 'none', color: '#ef4444', cursor: 'pointer', fontSize: '14px', padding: '0', lineHeight: 1 }}>×</button>
+                        </div>
+                      );
+                    })}
+                  </div>
+                  <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
+                    <input type="text" value={newDuration.category === 'uae' ? newDuration.value : ''} onChange={e => setNewDuration({ ...newDuration, category: 'uae', value: e.target.value })} placeholder="Vize türü" style={{ flex: '1 1 120px', padding: '6px 8px', background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '6px', color: '#e8f1f8', fontSize: '11px' }} />
+                    <input type="number" value={newDuration.category === 'uae' ? (newDuration.price || '') : ''} onChange={e => setNewDuration({ ...newDuration, category: 'uae', price: Number(e.target.value) })} placeholder="Fiyat" style={{ width: '70px', padding: '6px 8px', background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '6px', color: '#e8f1f8', fontSize: '11px' }} />
+                    <select value={newDuration.category === 'uae' ? (newDuration.currency || '$') : '$'} onChange={e => setNewDuration({ ...newDuration, category: 'uae', currency: e.target.value })} style={{ width: '50px', padding: '6px', background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '6px', color: '#e8f1f8', fontSize: '11px' }}>
+                      <option value="€">€</option>
+                      <option value="$">$</option>
+                      <option value="£">£</option>
+                      <option value="₺">₺</option>
+                    </select>
+                    <button onClick={() => { if (newDuration.value && newDuration.value.trim()) { const newItem = { name: newDuration.value.trim(), price: newDuration.price || 0, currency: newDuration.currency || '$' }; setAppSettings({ ...appSettings, visaDurations: { ...appSettings.visaDurations, uae: [...(appSettings.visaDurations?.uae || []), newItem] } }); setNewDuration({ category: '', value: '', price: 0, currency: '€' }); } }} style={{ padding: '6px 10px', background: 'linear-gradient(135deg, #f59e0b, #d97706)', border: 'none', borderRadius: '6px', color: 'white', cursor: 'pointer', fontSize: '11px', fontWeight: '600' }}>➕</button>
+                  </div>
+                </div>
+              </details>
+
+              <details style={{ background: 'rgba(59,130,246,0.05)', borderRadius: '10px', border: '1px solid rgba(59,130,246,0.2)', padding: '12px' }}>
+                <summary style={{ cursor: 'pointer', fontWeight: '600', color: '#3b82f6', fontSize: '14px', listStyle: 'none' }}>
+                  <span style={{ marginRight: '8px' }}>🇺🇸</span>
+                  Amerika ({(appSettings?.visaDurations?.usa || []).length} tür)
+                </summary>
+                <div style={{ paddingLeft: '26px', marginTop: '10px' }}>
+                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', marginBottom: '10px' }}>
+                    {(appSettings?.visaDurations?.usa || []).map((d, idx) => {
+                      const name = typeof d === 'string' ? d : d.name;
+                      const price = typeof d === 'object' ? d.price : 0;
+                      const currency = typeof d === 'object' ? d.currency : '$';
+                      return (
+                        <div key={idx} style={{ display: 'flex', alignItems: 'center', gap: '6px', background: 'rgba(59,130,246,0.15)', padding: '6px 10px', borderRadius: '6px', border: '1px solid rgba(59,130,246,0.3)' }}>
+                          <span style={{ fontSize: '11px', color: '#3b82f6' }}>
+                            {name} {price > 0 && `• ${price} ${currency}`}
+                          </span>
+                          <button onClick={() => setAppSettings({ ...appSettings, visaDurations: { ...appSettings.visaDurations, usa: appSettings.visaDurations.usa.filter((_, i) => i !== idx) } })} style={{ background: 'none', border: 'none', color: '#ef4444', cursor: 'pointer', fontSize: '14px', padding: '0', lineHeight: 1 }}>×</button>
+                        </div>
+                      );
+                    })}
+                  </div>
+                  <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
+                    <input type="text" value={newDuration.category === 'usa' ? newDuration.value : ''} onChange={e => setNewDuration({ ...newDuration, category: 'usa', value: e.target.value })} placeholder="Vize türü" style={{ flex: '1 1 120px', padding: '6px 8px', background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '6px', color: '#e8f1f8', fontSize: '11px' }} />
+                    <input type="number" value={newDuration.category === 'usa' ? (newDuration.price || '') : ''} onChange={e => setNewDuration({ ...newDuration, category: 'usa', price: Number(e.target.value) })} placeholder="Fiyat" style={{ width: '70px', padding: '6px 8px', background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '6px', color: '#e8f1f8', fontSize: '11px' }} />
+                    <select value={newDuration.category === 'usa' ? (newDuration.currency || '$') : '$'} onChange={e => setNewDuration({ ...newDuration, category: 'usa', currency: e.target.value })} style={{ width: '50px', padding: '6px', background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '6px', color: '#e8f1f8', fontSize: '11px' }}>
+                      <option value="€">€</option>
+                      <option value="$">$</option>
+                      <option value="£">£</option>
+                      <option value="₺">₺</option>
+                    </select>
+                    <button onClick={() => { if (newDuration.value && newDuration.value.trim()) { const newItem = { name: newDuration.value.trim(), price: newDuration.price || 0, currency: newDuration.currency || '$' }; setAppSettings({ ...appSettings, visaDurations: { ...appSettings.visaDurations, usa: [...(appSettings.visaDurations?.usa || []), newItem] } }); setNewDuration({ category: '', value: '', price: 0, currency: '€' }); } }} style={{ padding: '6px 10px', background: 'linear-gradient(135deg, #3b82f6, #2563eb)', border: 'none', borderRadius: '6px', color: 'white', cursor: 'pointer', fontSize: '11px', fontWeight: '600' }}>➕</button>
+                  </div>
+                </div>
+              </details>
+
+              <details style={{ background: 'rgba(139,92,246,0.05)', borderRadius: '10px', border: '1px solid rgba(139,92,246,0.2)', padding: '12px' }}>
+                <summary style={{ cursor: 'pointer', fontWeight: '600', color: '#8b5cf6', fontSize: '14px', listStyle: 'none' }}>
+                  <span style={{ marginRight: '8px' }}>🇬🇧</span>
+                  İngiltere ({(appSettings?.visaDurations?.uk || []).length} tür)
+                </summary>
+                <div style={{ paddingLeft: '26px', marginTop: '10px' }}>
+                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', marginBottom: '10px' }}>
+                    {(appSettings?.visaDurations?.uk || []).map((d, idx) => {
+                      const name = typeof d === 'string' ? d : d.name;
+                      const price = typeof d === 'object' ? d.price : 0;
+                      const currency = typeof d === 'object' ? d.currency : '£';
+                      return (
+                        <div key={idx} style={{ display: 'flex', alignItems: 'center', gap: '6px', background: 'rgba(139,92,246,0.15)', padding: '6px 10px', borderRadius: '6px', border: '1px solid rgba(139,92,246,0.3)' }}>
+                          <span style={{ fontSize: '11px', color: '#8b5cf6' }}>
+                            {name} {price > 0 && `• ${price} ${currency}`}
+                          </span>
+                          <button onClick={() => setAppSettings({ ...appSettings, visaDurations: { ...appSettings.visaDurations, uk: appSettings.visaDurations.uk.filter((_, i) => i !== idx) } })} style={{ background: 'none', border: 'none', color: '#ef4444', cursor: 'pointer', fontSize: '14px', padding: '0', lineHeight: 1 }}>×</button>
+                        </div>
+                      );
+                    })}
+                  </div>
+                  <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
+                    <input type="text" value={newDuration.category === 'uk' ? newDuration.value : ''} onChange={e => setNewDuration({ ...newDuration, category: 'uk', value: e.target.value })} placeholder="Vize türü" style={{ flex: '1 1 120px', padding: '6px 8px', background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '6px', color: '#e8f1f8', fontSize: '11px' }} />
+                    <input type="number" value={newDuration.category === 'uk' ? (newDuration.price || '') : ''} onChange={e => setNewDuration({ ...newDuration, category: 'uk', price: Number(e.target.value) })} placeholder="Fiyat" style={{ width: '70px', padding: '6px 8px', background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '6px', color: '#e8f1f8', fontSize: '11px' }} />
+                    <select value={newDuration.category === 'uk' ? (newDuration.currency || '£') : '£'} onChange={e => setNewDuration({ ...newDuration, category: 'uk', currency: e.target.value })} style={{ width: '50px', padding: '6px', background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '6px', color: '#e8f1f8', fontSize: '11px' }}>
+                      <option value="€">€</option>
+                      <option value="$">$</option>
+                      <option value="£">£</option>
+                      <option value="₺">₺</option>
+                    </select>
+                    <button onClick={() => { if (newDuration.value && newDuration.value.trim()) { const newItem = { name: newDuration.value.trim(), price: newDuration.price || 0, currency: newDuration.currency || '£' }; setAppSettings({ ...appSettings, visaDurations: { ...appSettings.visaDurations, uk: [...(appSettings.visaDurations?.uk || []), newItem] } }); setNewDuration({ category: '', value: '', price: 0, currency: '€' }); } }} style={{ padding: '6px 10px', background: 'linear-gradient(135deg, #8b5cf6, #7c3aed)', border: 'none', borderRadius: '6px', color: 'white', cursor: 'pointer', fontSize: '11px', fontWeight: '600' }}>➕</button>
+                  </div>
+                </div>
+              </details>
+
+              <details style={{ background: 'rgba(239,68,68,0.05)', borderRadius: '10px', border: '1px solid rgba(239,68,68,0.2)', padding: '12px' }}>
+                <summary style={{ cursor: 'pointer', fontWeight: '600', color: '#ef4444', fontSize: '14px', listStyle: 'none' }}>
+                  <span style={{ marginRight: '8px' }}>🇨🇳</span>
+                  Çin ({(appSettings?.visaDurations?.china || []).length} tür)
+                </summary>
+                <div style={{ paddingLeft: '26px', marginTop: '10px' }}>
+                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', marginBottom: '10px' }}>
+                    {(appSettings?.visaDurations?.china || []).map((d, idx) => {
+                      const name = typeof d === 'string' ? d : d.name;
+                      const price = typeof d === 'object' ? d.price : 0;
+                      const currency = typeof d === 'object' ? d.currency : '€';
+                      return (
+                        <div key={idx} style={{ display: 'flex', alignItems: 'center', gap: '6px', background: 'rgba(239,68,68,0.15)', padding: '6px 10px', borderRadius: '6px', border: '1px solid rgba(239,68,68,0.3)' }}>
+                          <span style={{ fontSize: '11px', color: '#ef4444' }}>
+                            {name} {price > 0 && `• ${price} ${currency}`}
+                          </span>
+                          <button onClick={() => setAppSettings({ ...appSettings, visaDurations: { ...appSettings.visaDurations, china: appSettings.visaDurations.china.filter((_, i) => i !== idx) } })} style={{ background: 'none', border: 'none', color: '#ef4444', cursor: 'pointer', fontSize: '14px', padding: '0', lineHeight: 1 }}>×</button>
+                        </div>
+                      );
+                    })}
+                  </div>
+                  <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
+                    <input type="text" value={newDuration.category === 'china' ? newDuration.value : ''} onChange={e => setNewDuration({ ...newDuration, category: 'china', value: e.target.value })} placeholder="Vize türü" style={{ flex: '1 1 120px', padding: '6px 8px', background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '6px', color: '#e8f1f8', fontSize: '11px' }} />
+                    <input type="number" value={newDuration.category === 'china' ? (newDuration.price || '') : ''} onChange={e => setNewDuration({ ...newDuration, category: 'china', price: Number(e.target.value) })} placeholder="Fiyat" style={{ width: '70px', padding: '6px 8px', background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '6px', color: '#e8f1f8', fontSize: '11px' }} />
+                    <select value={newDuration.category === 'china' ? (newDuration.currency || '€') : '€'} onChange={e => setNewDuration({ ...newDuration, category: 'china', currency: e.target.value })} style={{ width: '50px', padding: '6px', background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '6px', color: '#e8f1f8', fontSize: '11px' }}>
+                      <option value="€">€</option>
+                      <option value="$">$</option>
+                      <option value="£">£</option>
+                      <option value="₺">₺</option>
+                    </select>
+                    <button onClick={() => { if (newDuration.value && newDuration.value.trim()) { const newItem = { name: newDuration.value.trim(), price: newDuration.price || 0, currency: newDuration.currency || '€' }; setAppSettings({ ...appSettings, visaDurations: { ...appSettings.visaDurations, china: [...(appSettings.visaDurations?.china || []), newItem] } }); setNewDuration({ category: '', value: '', price: 0, currency: '€' }); } }} style={{ padding: '6px 10px', background: 'linear-gradient(135deg, #ef4444, #dc2626)', border: 'none', borderRadius: '6px', color: 'white', cursor: 'pointer', fontSize: '11px', fontWeight: '600' }}>➕</button>
+                  </div>
+                </div>
+              </details>
             </div>
           </div>
         </div>
